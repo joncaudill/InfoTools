@@ -65,6 +65,7 @@ dotnet run --project InfoTools
 - The application opens with a navigation pane.
 - Select "Favicon Identifier" to use the favicon hash lookup tool.
 - Click "Browse" to select a `.ico` file, then click "Analyze" to identify the favicon using the local database.
+- Alternatively, drag and drop a `.ico` file directly onto the "Favicon Identifier" page to automatically populate the file selection and enable analysis.
 
 ## Versioning
 
