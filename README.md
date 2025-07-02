@@ -1,6 +1,7 @@
+# README.md
 # InfoTools
 
-InfoTools is a Windows desktop application (WPF, .NET 8) that provides tools such as favicon identification using a local database of known favicon hashes.
+InfoTools is a Windows desktop application (WPF, .NET 8) that provides tools such as favicon identification using a local database of known favicon hashes, and website header analysis with integrated favicon detection.
 
 NOTE: for testing purposes, the application includes:
 - A sample favicon.ico file
@@ -46,14 +47,13 @@ You can build the project using Visual Studio or the .NET CLI:
   dotnet build
 
 
-
 ## Run
 
 - **Using Visual Studio:**  
 - Press `F5` to run with debugging, or `Ctrl+F5` to run without debugging.
 
-- **Using .NET CLI:** 
-dotnet run --project InfoTools
+- **Using .NET CLI:**  
+  dotnet run --project InfoTools
 
 
 ## Usage
@@ -63,14 +63,35 @@ dotnet run --project InfoTools
 - Click "Browse" to select a `.ico` file, then click "Analyze" to identify the favicon using the local database.
 - Alternatively, drag and drop a `.ico` file directly onto the "Favicon Identifier" page to automatically populate the file selection and enable analysis.
 - Select "Get Site Headers" to retrieve HTTP headers from a website. Enter a URL and click "Check Site Headers" to view the headers.
+- **NEW in v0.4.0:** The "Get Site Headers" page now also automatically downloads and analyzes the website's favicon, displaying both the favicon image and its identification result above the headers section.
+
+## Features
+
+### Favicon Identifier
+- Analyze local `.ico` files by computing MD5 hashes
+- Look up favicon hashes in a local database of known frameworks
+- Drag and drop support for easy file selection
+- Comprehensive error handling and user feedback
+
+### Get Site Headers
+- Retrieve and display HTTP response headers from any website
+- **NEW:** Automatic favicon detection and analysis
+- **NEW:** Visual favicon display with identification results
+- URL validation with support for localhost and IP addresses
+- Comprehensive error handling for network requests
+
+### Architecture
+- **NEW:** Refactored favicon functionality into a reusable `FaviconService` class
+- Comprehensive XML documentation for IntelliSense support
+- Modular design allowing favicon analysis to be used across multiple pages
 
 ## Versioning
 
 Version information is managed in the `.csproj` file using these properties:
-- `<Version>` - Current: 0.3.0
-- `<AssemblyVersion>` - Current: 0.3.0.1
-- `<FileVersion>` - Current: 0.3.0.1
-- `<InformationalVersion>` - Current: 0.3.0
+- `<Version>` - Current: 0.4.0
+- `<AssemblyVersion>` - Current: 0.4.0.1
+- `<FileVersion>` - Current: 0.4.0.1
+- `<InformationalVersion>` - Current: 0.4.0
 
 Update these as needed for new releases.
 
@@ -78,5 +99,7 @@ Update these as needed for new releases.
 
 - If you encounter issues with missing resources, ensure the `resources` directory and its files are present in the output directory after build.
 - The application is intended for Windows only.
+- Favicon downloads have a 10-second timeout to prevent hanging on unresponsive servers.
+- The favicon analysis uses MD5 hashing for compatibility with the OWASP favicon database format.
 
 ---
