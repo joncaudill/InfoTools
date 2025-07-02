@@ -44,6 +44,21 @@
                     <TextBlock Text="Favicon Identifier" FontSize="16"/>
                 </StackPanel>
             </Button>
+            <!-- Get Site Headers Button -->
+            <Button Name="GetSiteHeadersButton"
+                    HorizontalAlignment="Left"
+                    Margin="8,0,0,8"
+                    Padding="8"
+                    Background="Transparent"
+                    Foreground="White"
+                    BorderBrush="Transparent"
+                    Cursor="Hand"
+                    Click="GetSiteHeadersButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71B;" FontSize="18" Margin="0,0,8,0"/>
+                    <TextBlock Text="Get Site Headers" FontSize="16"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
         <!-- Main Content Area -->
         <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>

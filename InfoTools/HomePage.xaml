@@ -9,9 +9,15 @@
       Title="Home">
 
     <Grid Background="White">
-        <TextBlock Text="hello world, i'm a placeholder"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontSize="24"/>
+        <StackPanel Margin="20">
+            <TextBlock Text="Welcome to InfoTools" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="Pages:" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock Text="• Home - Main dashboard" FontSize="16" Margin="0,0,0,5"/>
+                <TextBlock Text="• Favicon Identifier - Identify favicons using a local database" FontSize="16" Margin="0,0,0,5"/>
+                <TextBlock Text="• Get Site Headers - Retrieve HTTP headers from a website" FontSize="16" Margin="0,0,0,5"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>

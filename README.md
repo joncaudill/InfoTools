@@ -43,22 +43,18 @@ You can build the project using Visual Studio or the .NET CLI:
 
 - **Using .NET CLI:**  
   Open a terminal in the project directory and run:
-
-  ```
   dotnet build
-  ```
 
-  
+
+
 ## Run
 
 - **Using Visual Studio:**  
-  - Press `F5` to run with debugging, or `Ctrl+F5` to run without debugging.
+- Press `F5` to run with debugging, or `Ctrl+F5` to run without debugging.
 
 - **Using .NET CLI:** 
-
-```
 dotnet run --project InfoTools
-```
+
 
 ## Usage
 
@@ -66,14 +62,15 @@ dotnet run --project InfoTools
 - Select "Favicon Identifier" to use the favicon hash lookup tool.
 - Click "Browse" to select a `.ico` file, then click "Analyze" to identify the favicon using the local database.
 - Alternatively, drag and drop a `.ico` file directly onto the "Favicon Identifier" page to automatically populate the file selection and enable analysis.
+- Select "Get Site Headers" to retrieve HTTP headers from a website. Enter a URL and click "Check Site Headers" to view the headers.
 
 ## Versioning
 
 Version information is managed in the `.csproj` file using these properties:
-- `<Version>`
-- `<AssemblyVersion>`
-- `<FileVersion>`
-- `<InformationalVersion>`
+- `<Version>` - Current: 0.3.0
+- `<AssemblyVersion>` - Current: 0.3.0.1
+- `<FileVersion>` - Current: 0.3.0.1
+- `<InformationalVersion>` - Current: 0.3.0
 
 Update these as needed for new releases.
 

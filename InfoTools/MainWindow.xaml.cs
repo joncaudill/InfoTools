@@ -31,5 +31,10 @@ namespace InfoTools
         {
             MainFrame.Navigate(new FaviconIdentifierPage());
         }
+
+        private void GetSiteHeadersButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new GetSiteHeadersPage());
+        }
     }
 }
