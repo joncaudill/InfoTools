@@ -15,10 +15,40 @@ namespace InfoTools
             UrlTextBox.TextChanged += (s, e) => CheckHeadersButton.IsEnabled = IsValidUrl(UrlTextBox.Text);
         }
 
-        private bool IsValidUrl(string url)
+        private static bool IsValidUrl(string url)
         {
-            // Simple check: not empty and contains "http://" or "https://"
-            return !string.IsNullOrWhiteSpace(url) && (url.Contains("http://") || url.Contains("https://"));
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
+
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                return false;
+
+            if (string.IsNullOrWhiteSpace(uri.Scheme) || string.IsNullOrWhiteSpace(uri.Host))
+                return false;
+
+            // Only allow valid URL characters (RFC 3986)
+            var invalidCharPattern = @"[ <>""{}|\\^`[\]\x00-\x1F\x7F]";
+            if (System.Text.RegularExpressions.Regex.IsMatch(url, invalidCharPattern))
+                return false;
+
+            // Accept localhost
+            if (uri.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            // Accept valid IP addresses
+            if (System.Net.IPAddress.TryParse(uri.Host, out _))
+                return true;
+
+            // Host must contain a dot and a valid TLD (at least 2 letters)
+            var hostParts = uri.Host.Split('.');
+            if (hostParts.Length >= 2)
+            {
+                var tld = hostParts[^1];
+                if (tld.Length >= 2 && tld.All(char.IsLetter))
+                    return true;
+            }
+
+            return false;
         }
 
         private async void CheckHeadersButton_Click(object sender, RoutedEventArgs e)
@@ -34,7 +64,8 @@ namespace InfoTools
                 var headers = response.Headers;
                 foreach (var header in headers)
                 {
-                    var headerLabel = new Label { Content = $"{header.Key}: {header.Value}", FontSize = 14, Margin = "0,5" };
+                    var values = string.Join(", ", header.Value);
+                    var headerLabel = new Label { Content = $"{header.Key}: {values}", FontSize = 14, Margin = new Thickness(0, 5, 0, 0)};
                     HeadersPanel.Children.Add(headerLabel);
                 }
             }
