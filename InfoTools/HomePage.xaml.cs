@@ -23,10 +23,17 @@ namespace InfoTools
     public partial class HomePage : Page
     {
         private DoubleAnimation? _scrollingAnimation;
+        private bool _isScrolling;
+        private double _scrollSpeed = 2.0; // pixels per frame, adjust as needed
 
         public HomePage()
         {
             InitializeComponent();
+            this.Loaded += HomePage_Loaded;
+        }
+
+        private void HomePage_Loaded(object sender, RoutedEventArgs e)
+        {
             InitializeAlertBar();
         }
 
@@ -36,16 +43,8 @@ namespace InfoTools
         private void InitializeAlertBar()
         {
             string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
-            if (File.Exists(path) && new FileInfo(path).Length > 0)
-            {
-                UpdateAlertText();
-                AlertCanvas.Visibility = Visibility.Visible;
-                StartScrollingAnimation();
-            }
-            else
-            {
-                AlertCanvas.Visibility = Visibility.Collapsed;
-            }
+            UpdateAlertText(); // This will set visibility appropriately
+
             // Start timer to check for updates every minute
             var _alertTimer = new System.Timers.Timer(60000);
             _alertTimer.Elapsed += OnAlertTimerElapsed;
@@ -67,17 +66,22 @@ namespace InfoTools
                 text = text.Replace("$$DATE$$", DateTime.Now.ToShortDateString());
                 text = text.Replace("$$YEAR$$", DateTime.Now.Year.ToString());
                 AlertText.Text = text;
-                // Update animation if text changed
-                if (_scrollingAnimation != null)
+                if (text.Length > 0)
                 {
-                    AlertText.BeginAnimation(Canvas.LeftProperty, null); // Stop the current animation
+                    AlertCanvas.Visibility = Visibility.Visible; // Only show if text is present
                 }
+                else
+                {
+                    AlertCanvas.Visibility = Visibility.Hidden;
+                }
+                StopScrollingAnimation();
                 SetupScrollingAnimation();
             }
             else
             {
                 AlertText.Text = string.Empty;
                 AlertCanvas.Visibility = Visibility.Collapsed;
+                StopScrollingAnimation();
             }
         }
 
@@ -88,28 +92,67 @@ namespace InfoTools
         {
             if (string.IsNullOrEmpty(AlertText.Text)) return;
 
+            AlertCanvas.Visibility = Visibility.Visible;
+            AlertCanvas.UpdateLayout();
+
             AlertText.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             double textWidth = AlertText.DesiredSize.Width;
             double canvasWidth = AlertCanvas.ActualWidth;
 
-            if (textWidth <= canvasWidth) return; // No need to scroll if text fits
+            if (canvasWidth == 0)
+            {
+                AlertCanvas.Dispatcher.BeginInvoke(
+                    new Action(SetupScrollingAnimation),
+                    System.Windows.Threading.DispatcherPriority.Loaded
+                );
+                return;
+            }
 
-            // Position text to the right
+            //if (textWidth <= canvasWidth)
+            //{
+            //    StopScrollingAnimation();
+            //    return;
+            //}
+
             Canvas.SetLeft(AlertText, canvasWidth);
 
-            // Create animation: from right to left (from canvasWidth to -textWidth)
-            DoubleAnimation animation = new DoubleAnimation(
-                canvasWidth,
-                -textWidth,
-                TimeSpan.FromSeconds((canvasWidth + textWidth) / 100.0) // ~100 pixels/sec
-            );
-            animation.Completed += OnScrollingAnimationCompleted;
+            if (!_isScrolling)
+            {
+                CompositionTarget.Rendering += OnAlertTextRender;
+                _isScrolling = true;
+            }
+        }
 
-            // Store animation reference for later use
-            _scrollingAnimation = animation;
+        /// <summary>
+        /// Handles the rendering event to scroll the alert text
+        /// </summary>
+        private void OnAlertTextRender(object? sender, EventArgs e)
+        {
+            double textWidth = AlertText.DesiredSize.Width;
+            double canvasWidth = AlertCanvas.ActualWidth;
+            double left = Canvas.GetLeft(AlertText);
 
-            // Start animation
-            AlertText.BeginAnimation(Canvas.LeftProperty, animation);
+            // Move left by scroll speed
+            left -= _scrollSpeed;
+            Canvas.SetLeft(AlertText, left);
+
+            // If the right edge of the text is off the left side, reset to right
+            if (left + textWidth <= 0)
+            {
+                Canvas.SetLeft(AlertText, canvasWidth);
+            }
+        }
+
+        /// <summary>
+        /// Stops the scrolling animation for the alert text
+        /// </summary>
+        private void StopScrollingAnimation()
+        {
+            if (_isScrolling)
+            {
+                CompositionTarget.Rendering -= OnAlertTextRender;
+                _isScrolling = false;
+            }
         }
 
         /// <summary>
@@ -121,20 +164,11 @@ namespace InfoTools
         }
 
         /// <summary>
-        /// Handles the completion of the scrolling animation by resetting and restarting it
-        /// </summary>
-        private void OnScrollingAnimationCompleted(object? sender, EventArgs e)
-        {
-            SetupScrollingAnimation(); // Reset and start again
-        }
-
-        /// <summary>
         /// Event handler for the alert timer that checks for file updates every 60 seconds
         /// </summary>
         private void OnAlertTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             Dispatcher.Invoke(() => UpdateAlertText());
         }
-
     }
 }
