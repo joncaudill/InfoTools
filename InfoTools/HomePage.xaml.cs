@@ -22,6 +22,8 @@ namespace InfoTools
     /// </summary>
     public partial class HomePage : Page
     {
+        private DoubleAnimation? _scrollingAnimation;
+
         public HomePage()
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace InfoTools
         /// </summary>
         private void InitializeAlertBar()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
+            string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
             if (File.Exists(path) && new FileInfo(path).Length > 0)
             {
                 UpdateAlertText();
@@ -45,7 +47,7 @@ namespace InfoTools
                 AlertCanvas.Visibility = Visibility.Collapsed;
             }
             // Start timer to check for updates every minute
-            _alertTimer = new System.Timers.Timer(60000);
+            var _alertTimer = new System.Timers.Timer(60000);
             _alertTimer.Elapsed += OnAlertTimerElapsed;
             _alertTimer.AutoReset = true;
             _alertTimer.Start();
@@ -56,7 +58,7 @@ namespace InfoTools
         /// </summary>
         private void UpdateAlertText()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
+            string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
             if (File.Exists(path) && new FileInfo(path).Length > 0)
             {
                 string text = File.ReadAllText(path);
@@ -66,9 +68,9 @@ namespace InfoTools
                 text = text.Replace("$$YEAR$$", DateTime.Now.Year.ToString());
                 AlertText.Text = text;
                 // Update animation if text changed
-                if (_scrollingAnimation != null && _scrollingAnimation.GetValue(AlertText) != null)
+                if (_scrollingAnimation != null)
                 {
-                    _scrollingAnimation.Stop(AlertText);
+                    AlertText.BeginAnimation(Canvas.LeftProperty, null); // Stop the current animation
                 }
                 SetupScrollingAnimation();
             }
@@ -111,9 +113,17 @@ namespace InfoTools
         }
 
         /// <summary>
+        /// Starts the scrolling animation for the alert text.
+        /// </summary>
+        private void StartScrollingAnimation()
+        {
+            SetupScrollingAnimation();
+        }
+
+        /// <summary>
         /// Handles the completion of the scrolling animation by resetting and restarting it
         /// </summary>
-        private void OnScrollingAnimationCompleted(object sender, EventArgs e)
+        private void OnScrollingAnimationCompleted(object? sender, EventArgs e)
         {
             SetupScrollingAnimation(); // Reset and start again
         }
@@ -121,7 +131,7 @@ namespace InfoTools
         /// <summary>
         /// Event handler for the alert timer that checks for file updates every 60 seconds
         /// </summary>
-        private void OnAlertTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void OnAlertTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             Dispatcher.Invoke(() => UpdateAlertText());
         }
