@@ -85,6 +85,40 @@ You can build the project using Visual Studio or the .NET CLI:
 - Comprehensive XML documentation for IntelliSense support
 - Modular design allowing favicon analysis to be used across multiple pages
 
+## Alert Functionality
+
+The application now includes an alert bar on the HomePage that displays dynamic messages from the `alertBarText.txt` file in the resources folder.
+
+### Features
+
+- **Dynamic Content**: Messages support placeholders like `$$DAY$$`, `$$MONTH$$`, `$$DATE$$`, and `$$YEAR$$` that are automatically replaced with current values.
+- **Scrolling Display**: Messages scroll from right to left across the screen for better visibility.
+- **Periodic Updates**: The alert bar checks for content changes every 60 seconds and updates automatically.
+- **Conditional Display**: The alert bar only appears when `alertBarText.txt` exists and contains content.
+
+### Configuration
+
+To enable alerts, simply create or modify the `alertBarText.txt` file in the `resources` folder with your message content. The file is automatically copied to the output directory on build.
+
+Example content:
+Welcome to InfoTools! Today is 
+D
+A
+Y
+ , 
+D
+A
+T
+E
+ in 
+Y
+E
+A
+R
+ .
+
+
+This will display: "Welcome to InfoTools! Today is Monday, 10/2/2023 in 2023."
 ## Versioning
 
 Version information is managed in the `.csproj` file using these properties:
