@@ -28,7 +28,7 @@ namespace InfoTools
         /// </summary>
         private void LoadFaviconDatabase()
         {
-            var (success, message) = _faviconService.LoadFaviconDatabase();
+            var (_, message) = _faviconService.LoadFaviconDatabase();
             StatusText.Text = message;
         }
 

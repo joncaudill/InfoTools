@@ -12,7 +12,7 @@ namespace InfoTools
     /// </summary>
     public class FaviconService
     {
-        private readonly Dictionary<string, string> _faviconDatabase = new();
+        private readonly Dictionary<string, string> _faviconDatabase = [];
         private bool _isDatabaseLoaded = false;
 
         /// <summary>
@@ -96,8 +96,7 @@ namespace InfoTools
         /// <returns>The MD5 hash as a lowercase string.</returns>
         public static string ComputeMD5FromBytes(byte[] data)
         {
-            using var md5 = MD5.Create();
-            var hashBytes = md5.ComputeHash(data);
+            var hashBytes = MD5.HashData(data);
             return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
         }
 
