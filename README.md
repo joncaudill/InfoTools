@@ -101,22 +101,7 @@ The application now includes an alert bar on the HomePage that displays dynamic 
 To enable alerts, simply create or modify the `alertBarText.txt` file in the `resources` folder with your message content. The file is automatically copied to the output directory on build.
 
 Example content:
-Welcome to InfoTools! Today is 
-D
-A
-Y
- , 
-D
-A
-T
-E
- in 
-Y
-E
-A
-R
- .
-
+Welcome to InfoTools! Today is \$$DAY$$, \$$DATE$$/\$$MONTH$$/\$$YEAR$$ in \$$YEAR$$.
 
 This will display: "Welcome to InfoTools! Today is Monday, 10/2/2023 in 2023."
 ## Versioning
