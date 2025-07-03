@@ -33,17 +33,29 @@ namespace InfoTools
             {
                 NavigationColorTextBox.Text = navColor;
             }
+
+            if (App.InfoToolsSettings.TryGetValue("AlertBarColor", out var alertColor))
+            {
+                AlertBarColorTextBox.Text = alertColor;
+            }
         }
 
         private void ApplyChangesButton_Click(object sender, RoutedEventArgs e)
         {
             App.InfoToolsSettings["NavigationColor"] = NavigationColorTextBox.Text;
+            App.InfoToolsSettings["AlertBarColor"] = AlertBarColorTextBox.Text;
             App.SaveSettings();
 
             // Immediately update navigation color in MainWindow
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 mainWindow.ApplyNavigationColor(NavigationColorTextBox.Text);
+
+                // Update alert bar color on home page if it's currently displayed
+                if (mainWindow.MainFrame.Content is HomePage homePage)
+                {
+                    homePage.ApplyAlertBarColor(AlertBarColorTextBox.Text);
+                }
             }
 
             MessageBox.Show("Settings applied.", "Settings", MessageBoxButton.OK, MessageBoxImage.Information);

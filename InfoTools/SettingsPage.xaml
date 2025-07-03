@@ -29,5 +29,16 @@
                            Fill="{Binding Text, ElementName=NavigationColorTextBox, Converter={StaticResource HexToBrushConverter}}"/>
             </Border>
         </StackPanel>
+
+        <TextBlock Text="Home Page" FontSize="18" FontWeight="SemiBold" Margin="0,20,0,10"/>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+            <TextBlock Text="Alert Bar Color:" FontWeight="Normal" FontSize="16" VerticalAlignment="Center"/>
+            <TextBox x:Name="AlertBarColorTextBox" Width="100" Height="28" Margin="12,0,0,0" VerticalAlignment="Center" Text="#FF0000"/>
+            <Border Width="32" Height="32" BorderBrush="Black" BorderThickness="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                <Rectangle Width="30" Height="30"
+                           Fill="{Binding Text, ElementName=AlertBarColorTextBox, Converter={StaticResource HexToBrushConverter}}"/>
+            </Border>
+        </StackPanel>
     </StackPanel>
 </Page>

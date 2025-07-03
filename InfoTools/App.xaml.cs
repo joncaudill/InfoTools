@@ -30,7 +30,8 @@ namespace InfoTools
                 // Create default config file
                 InfoToolsSettings = new Dictionary<string, string>
                 {
-                    { "NavigationColor", "#2D2D30" }
+                    { "NavigationColor", "#2D2D30" },
+                    { "AlertBarColor", "#FF0000" }
                 };
                 Directory.CreateDirectory(Path.GetDirectoryName(configPath)!);
                 File.WriteAllText(configPath, JsonSerializer.Serialize(InfoToolsSettings, new JsonSerializerOptions { WriteIndented = true }));

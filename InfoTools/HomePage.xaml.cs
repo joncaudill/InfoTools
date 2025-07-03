@@ -35,6 +35,36 @@ namespace InfoTools
         private void HomePage_Loaded(object sender, RoutedEventArgs e)
         {
             InitializeAlertBar();
+            ApplyAlertBarColorFromSettings();
+        }
+
+        /// <summary>
+        /// Applies the alert bar color from settings
+        /// </summary>
+        private void ApplyAlertBarColorFromSettings()
+        {
+            if (App.InfoToolsSettings.TryGetValue("AlertBarColor", out var alertColor))
+            {
+                ApplyAlertBarColor(alertColor);
+            }
+        }
+
+        /// <summary>
+        /// Applies the specified color to the alert bar background
+        /// </summary>
+        /// <param name="colorHex">Hex color string (e.g., "#FF0000")</param>
+        public void ApplyAlertBarColor(string colorHex)
+        {
+            try
+            {
+                var converter = new System.Windows.Media.BrushConverter();
+                var brush = (Brush)converter.ConvertFromString(colorHex);
+                AlertCanvas.Background = brush;
+            }
+            catch
+            {
+                // If color conversion fails, keep the current color
+            }
         }
 
         /// <summary>
