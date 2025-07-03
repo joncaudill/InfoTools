@@ -29,7 +29,58 @@ namespace InfoTools
         private static readonly Dictionary<string, CachedSiteData> _siteCache = new();
         private static readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(5);
 
-        // ... existing code ...
+        /// <summary>
+        /// Initializes a new instance of the GetSiteHeadersPage class.
+        /// </summary>
+        public GetSiteHeadersPage()
+        {
+            InitializeComponent();
+            UrlTextBox.TextChanged += (s, e) => CheckHeadersButton.IsEnabled = IsValidUrl(UrlTextBox.Text);
+
+            // Load favicon database
+            _faviconService.LoadFaviconDatabase();
+        }
+
+        /// <summary>
+        /// Validates if the provided URL string is a valid URL format.
+        /// </summary>
+        /// <param name="url">The URL string to validate.</param>
+        /// <returns>True if the URL is valid, false otherwise.</returns>
+        private static bool IsValidUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
+
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                return false;
+
+            if (string.IsNullOrWhiteSpace(uri.Scheme) || string.IsNullOrWhiteSpace(uri.Host))
+                return false;
+
+            // Only allow valid URL characters (RFC 3986)
+            var invalidCharPattern = @"[ <>""{}|\\^`[\]\x00-\x1F\x7F]";
+            if (System.Text.RegularExpressions.Regex.IsMatch(url, invalidCharPattern))
+                return false;
+
+            // Accept localhost
+            if (uri.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            // Accept valid IP addresses
+            if (System.Net.IPAddress.TryParse(uri.Host, out _))
+                return true;
+
+            // Host must contain a dot and a valid TLD (at least 2 letters)
+            var hostParts = uri.Host.Split('.');
+            if (hostParts.Length >= 2)
+            {
+                var tld = hostParts[^1];
+                if (tld.Length >= 2 && tld.All(char.IsLetter))
+                    return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Handles the click event for the Check Headers button, retrieving site headers and favicon.
