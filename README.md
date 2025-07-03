@@ -77,8 +77,16 @@ You can build the project using Visual Studio or the .NET CLI:
 - Retrieve and display HTTP response headers from any website
 - **NEW:** Automatic favicon detection and analysis
 - **NEW:** Visual favicon display with identification results
+- **NEW in v0.5.1:** Intelligent caching system to prevent excessive requests to the same host
 - URL validation with support for localhost and IP addresses
 - Comprehensive error handling for network requests
+
+### Caching System (v0.5.1)
+- **Smart Caching**: Results are cached for 5 minutes per unique host to prevent excessive traffic
+- **Complete Data Storage**: Both HTTP headers and favicon data are cached together
+- **Cache Indicators**: Cached results are clearly marked with "[CACHED COPY]" and timestamp
+- **Automatic Expiration**: Cache automatically expires after 5 minutes, ensuring fresh data when needed
+- **Host-Based Keying**: Cache keys are normalized by host to handle URL variations efficiently
 
 ### Architecture
 - **NEW:** Refactored favicon functionality into a reusable `FaviconService` class
@@ -107,10 +115,10 @@ This will display: "Welcome to InfoTools! Today is Monday, 10/2/2023 in 2023."
 ## Versioning
 
 Version information is managed in the `.csproj` file using these properties:
-- `<Version>` - Current: 0.4.0
-- `<AssemblyVersion>` - Current: 0.4.0.1
-- `<FileVersion>` - Current: 0.4.0.1
-- `<InformationalVersion>` - Current: 0.4.0
+- `<Version>` - Current: 0.5.1
+- `<AssemblyVersion>` - Current: 0.5.1.1
+- `<FileVersion>` - Current: 0.5.1.1
+- `<InformationalVersion>` - Current: 0.5.1
 
 Update these as needed for new releases.
 
@@ -120,5 +128,6 @@ Update these as needed for new releases.
 - The application is intended for Windows only.
 - Favicon downloads have a 10-second timeout to prevent hanging on unresponsive servers.
 - The favicon analysis uses MD5 hashing for compatibility with the OWASP favicon database format.
+- **NEW:** Site scanning results are cached for 5 minutes to reduce server load and improve performance.
 
 ---
