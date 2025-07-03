@@ -33,8 +33,8 @@ namespace InfoTools
                     { "NavigationColor", "#2D2D30" },
                     { "AlertBarColor", "#FF0000" },
                     { "AlertBarFontFace", "Consolas" },
-                    { "AlertBarScaleX", "2.5" },
-                    { "AlertBarScaleY", "2.5" }
+                    { "AlertBarScaleX", "1" },
+                    { "AlertBarScaleY", "1" }
                 };
                 Directory.CreateDirectory(Path.GetDirectoryName(configPath)!);
                 File.WriteAllText(configPath, JsonSerializer.Serialize(InfoToolsSettings, new JsonSerializerOptions { WriteIndented = true }));
