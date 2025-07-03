@@ -32,12 +32,6 @@ namespace InfoTools
             this.Loaded += HomePage_Loaded;
         }
 
-        private void HomePage_Loaded(object sender, RoutedEventArgs e)
-        {
-            InitializeAlertBar();
-            ApplyAlertBarColorFromSettings();
-        }
-
         /// <summary>
         /// Applies the alert bar color from settings
         /// </summary>
@@ -100,6 +94,17 @@ namespace InfoTools
             catch
             {
                 // If color conversion fails, keep the current color
+            }
+        }
+
+        /// <summary>
+        /// Applies the alert bar color from settings
+        /// </summary>
+        private void ApplyAlertBarColorFromSettings()
+        {
+            if (App.InfoToolsSettings.TryGetValue("AlertBarColor", out var colorHex))
+            {
+                ApplyAlertBarColor(colorHex);
             }
         }
 
