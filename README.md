@@ -114,11 +114,55 @@ Welcome to InfoTools! Today is \$$DAY$$, \$$DATE$$/\$$MONTH$$/\$$YEAR$$ in \$$YE
 This will display: "Welcome to InfoTools! Today is Monday, 10/2/2023 in 2023."
 ## Versioning
 
-Version information is managed in the `.csproj` file using these properties:
-- `<Version>` - Current: 0.5.1
-- `<AssemblyVersion>` - Current: 0.5.1.1
-- `<FileVersion>` - Current: 0.5.1.1
-- `<InformationalVersion>` - Current: 0.5.1
+## Versioning
+
+- **Current Version:** 0.7.0
+- **Assembly Version:** 0.7.0.1
+- **File Version:** 0.7.0.1
+- **Informational Version:** 0.7.0
+
+Versioning follows semantic versioning for features and bugfixes. Assembly and file versions are incremented with each release.
+
+## Settings Functionality
+
+InfoTools now supports user-configurable settings for UI customization:
+
+- **Navigation Bar Color:**  
+  Change the color of the navigation bar to match your preferences.
+- **Alert Bar Color:**  
+  Set the background color of the alert bar displayed on the Home page.
+
+### How to Use
+
+1. **Open the Settings Page:**  
+   Click the "Settings" button in the navigation panel.
+
+2. **Modify Settings:**  
+   - Enter your desired hex color codes for the Navigation Bar and Alert Bar.
+   - Example: `#2D2D30` for dark gray, `#FF0000` for red.
+
+3. **Apply Changes:**  
+   - Click "Apply Changes" to save and immediately apply your settings.
+   - The changes are persisted in `resources/config.json` and will be loaded on next startup.
+
+4. **Immediate Effect:**  
+   - Navigation bar color updates instantly.
+   - If the Home page is active, the alert bar color updates immediately as well.
+
+### Configuration File
+
+Settings are stored in `resources/config.json` in the application directory.  
+If the file does not exist, it is created with default values on first run.
+```code
+{
+  "NavigationColor": "#2D2D30",
+  "AlertBarColor": "#FF0000"
+}
+```
+
+---
+
+For more details, see the in-app Settings page or review the `App.xaml.cs` and `SettingsPage.xaml.cs` source files.
 
 Update these as needed for new releases.
 
