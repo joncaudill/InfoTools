@@ -33,6 +33,12 @@ namespace InfoTools
             {
                 ApplyNavigationColor("#2D2D30");
             }
+
+            // Ensure HomePage is loaded on startup
+            if (MainFrame.Content == null)
+            {
+                MainFrame.Navigate(new HomePage());
+            }
         }
 
         public void ApplyNavigationColor(string colorHex)
