@@ -41,11 +41,47 @@ namespace InfoTools
         /// <summary>
         /// Applies the alert bar color from settings
         /// </summary>
-        private void ApplyAlertBarColorFromSettings()
+        private void HomePage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (App.InfoToolsSettings.TryGetValue("AlertBarColor", out var alertColor))
+            InitializeAlertBar();
+            ApplyAlertBarColorFromSettings();
+            ApplyAlertBarFontAndScale();
+        }
+
+        /// <summary>
+        /// Applies font face and scale settings from configuration to the alert bar
+        /// </summary>
+        public void ApplyAlertBarFontAndScale()
+        {
+            // Apply font face
+            if (App.InfoToolsSettings.TryGetValue("AlertBarFontFace", out var fontFace))
             {
-                ApplyAlertBarColor(alertColor);
+                try
+                {
+                    AlertText.FontFamily = new FontFamily(fontFace);
+                }
+                catch
+                {
+                    // If font family is invalid, keep current font
+                }
+            }
+
+            // Apply scale settings
+            if (App.InfoToolsSettings.TryGetValue("AlertBarScaleX", out var scaleXStr) &&
+                App.InfoToolsSettings.TryGetValue("AlertBarScaleY", out var scaleYStr))
+            {
+                if (double.TryParse(scaleXStr, out double scaleX) && double.TryParse(scaleYStr, out double scaleY))
+                {
+                    if (AlertText.RenderTransform is ScaleTransform existingTransform)
+                    {
+                        existingTransform.ScaleX = scaleX;
+                        existingTransform.ScaleY = scaleY;
+                    }
+                    else
+                    {
+                        AlertText.RenderTransform = new ScaleTransform(scaleX, scaleY);
+                    }
+                }
             }
         }
 

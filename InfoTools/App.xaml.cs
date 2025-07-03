@@ -31,7 +31,10 @@ namespace InfoTools
                 InfoToolsSettings = new Dictionary<string, string>
                 {
                     { "NavigationColor", "#2D2D30" },
-                    { "AlertBarColor", "#FF0000" }
+                    { "AlertBarColor", "#FF0000" },
+                    { "AlertBarFontFace", "Consolas" },
+                    { "AlertBarScaleX", "2.5" },
+                    { "AlertBarScaleY", "2.5" }
                 };
                 Directory.CreateDirectory(Path.GetDirectoryName(configPath)!);
                 File.WriteAllText(configPath, JsonSerializer.Serialize(InfoToolsSettings, new JsonSerializerOptions { WriteIndented = true }));

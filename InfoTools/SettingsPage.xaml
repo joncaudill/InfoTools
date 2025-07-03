@@ -37,8 +37,23 @@
             <TextBox x:Name="AlertBarColorTextBox" Width="100" Height="28" Margin="12,0,0,0" VerticalAlignment="Center" Text="#FF0000"/>
             <Border Width="32" Height="32" BorderBrush="Black" BorderThickness="1" Margin="12,0,0,0" VerticalAlignment="Center">
                 <Rectangle Width="30" Height="30"
-                           Fill="{Binding Text, ElementName=AlertBarColorTextBox, Converter={StaticResource HexToBrushConverter}}"/>
+                   Fill="{Binding Text, ElementName=AlertBarColorTextBox, Converter={StaticResource HexToBrushConverter}}"/>
             </Border>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+            <TextBlock Text="Font Face:" FontWeight="Normal" FontSize="16" VerticalAlignment="Center"/>
+            <ComboBox x:Name="FontFaceComboBox" Width="150" Height="28" Margin="12,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+            <TextBlock Text="ScaleX:" FontWeight="Normal" FontSize="16" VerticalAlignment="Center"/>
+            <TextBox x:Name="ScaleXTextBox" Width="100" Height="28" Margin="12,0,0,0" VerticalAlignment="Center" Text="2.5"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+            <TextBlock Text="ScaleY:" FontWeight="Normal" FontSize="16" VerticalAlignment="Center"/>
+            <TextBox x:Name="ScaleYTextBox" Width="100" Height="28" Margin="12,0,0,0" VerticalAlignment="Center" Text="2.5"/>
         </StackPanel>
     </StackPanel>
 </Page>

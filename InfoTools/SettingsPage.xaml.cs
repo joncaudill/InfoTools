@@ -23,7 +23,15 @@ namespace InfoTools
         public SettingsPage()
         {
             InitializeComponent();
+            LoadAvailableFonts();
             LoadSettings();
+        }
+
+        private void LoadAvailableFonts()
+        {
+            // Get all available system fonts
+            var fonts = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(f => f).ToList();
+            FontFaceComboBox.ItemsSource = fonts;
         }
 
         private void LoadSettings()
@@ -38,12 +46,49 @@ namespace InfoTools
             {
                 AlertBarColorTextBox.Text = alertColor;
             }
+
+            if (App.InfoToolsSettings.TryGetValue("AlertBarFontFace", out var fontFace))
+            {
+                FontFaceComboBox.SelectedItem = fontFace;
+            }
+
+            if (App.InfoToolsSettings.TryGetValue("AlertBarScaleX", out var scaleX))
+            {
+                ScaleXTextBox.Text = scaleX;
+            }
+
+            if (App.InfoToolsSettings.TryGetValue("AlertBarScaleY", out var scaleY))
+            {
+                ScaleYTextBox.Text = scaleY;
+            }
+        }
+
+        private bool ValidateNumericInput(string input, out double value)
+        {
+            return double.TryParse(input, out value) && value > 0;
         }
 
         private void ApplyChangesButton_Click(object sender, RoutedEventArgs e)
         {
+            // Validate numeric inputs
+            if (!ValidateNumericInput(ScaleXTextBox.Text, out double scaleXValue))
+            {
+                MessageBox.Show("ScaleX must be a valid positive number.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!ValidateNumericInput(ScaleYTextBox.Text, out double scaleYValue))
+            {
+                MessageBox.Show("ScaleY must be a valid positive number.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Update settings
             App.InfoToolsSettings["NavigationColor"] = NavigationColorTextBox.Text;
             App.InfoToolsSettings["AlertBarColor"] = AlertBarColorTextBox.Text;
+            App.InfoToolsSettings["AlertBarFontFace"] = FontFaceComboBox.SelectedItem?.ToString() ?? "Consolas";
+            App.InfoToolsSettings["AlertBarScaleX"] = ScaleXTextBox.Text;
+            App.InfoToolsSettings["AlertBarScaleY"] = ScaleYTextBox.Text;
             App.SaveSettings();
 
             // Immediately update navigation color in MainWindow
@@ -51,10 +96,11 @@ namespace InfoTools
             {
                 mainWindow.ApplyNavigationColor(NavigationColorTextBox.Text);
 
-                // Update alert bar color on home page if it's currently displayed
+                // Update alert bar settings on home page if it's currently displayed
                 if (mainWindow.MainFrame.Content is HomePage homePage)
                 {
                     homePage.ApplyAlertBarColor(AlertBarColorTextBox.Text);
+                    homePage.ApplyAlertBarFontAndScale();
                 }
             }
 
