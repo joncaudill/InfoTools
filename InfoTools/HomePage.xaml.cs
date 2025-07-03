@@ -96,7 +96,11 @@ namespace InfoTools
             AlertCanvas.UpdateLayout();
 
             AlertText.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            double textWidth = AlertText.DesiredSize.Width;
+            double scaleX = 1.0;
+            if (AlertText.RenderTransform is ScaleTransform scale)
+                scaleX = scale.ScaleX;
+
+            double textWidth = AlertText.DesiredSize.Width * scaleX;
             double canvasWidth = AlertCanvas.ActualWidth;
 
             if (canvasWidth == 0)
@@ -107,12 +111,6 @@ namespace InfoTools
                 );
                 return;
             }
-
-            //if (textWidth <= canvasWidth)
-            //{
-            //    StopScrollingAnimation();
-            //    return;
-            //}
 
             Canvas.SetLeft(AlertText, canvasWidth);
 
@@ -128,15 +126,17 @@ namespace InfoTools
         /// </summary>
         private void OnAlertTextRender(object? sender, EventArgs e)
         {
-            double textWidth = AlertText.DesiredSize.Width;
+            double scaleX = 1.0;
+            if (AlertText.RenderTransform is ScaleTransform scale)
+                scaleX = scale.ScaleX;
+
+            double textWidth = AlertText.DesiredSize.Width * scaleX;
             double canvasWidth = AlertCanvas.ActualWidth;
             double left = Canvas.GetLeft(AlertText);
 
-            // Move left by scroll speed
             left -= _scrollSpeed;
             Canvas.SetLeft(AlertText, left);
 
-            // If the right edge of the text is off the left side, reset to right
             if (left + textWidth <= 0)
             {
                 Canvas.SetLeft(AlertText, canvasWidth);

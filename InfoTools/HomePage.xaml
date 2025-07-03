@@ -17,8 +17,11 @@
         <Canvas x:Name="AlertCanvas" Height="50" Background="Red" Visibility="Hidden" Grid.Row="0" ClipToBounds="True">
             <TextBlock x:Name="AlertText" FontFamily="Consolas" FontSize="18" Foreground="LightGray">
                 <TextBlock.Effect>
-                    <DropShadowEffect Color="Black" ShadowDepth="4" />
+                    <DropShadowEffect Color="Black" ShadowDepth="2" Opacity="1" BlurRadius="0"  />
                 </TextBlock.Effect>
+                <TextBlock.RenderTransform>
+                    <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
+                </TextBlock.RenderTransform>
             </TextBlock>
         </Canvas>
 
