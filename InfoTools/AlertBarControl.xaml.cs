@@ -17,12 +17,18 @@ namespace InfoTools
         private System.Timers.Timer? _alertTimeUpdateTimer;
         private bool _alertTextHasTimeTag = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AlertBarControl"/> class.
+        /// </summary>
         public AlertBarControl()
         {
             InitializeComponent();
             this.Loaded += AlertBarControl_Loaded;
         }
 
+        /// <summary>
+        /// Handles the Loaded event, applying settings and initializing the alert bar.
+        /// </summary>
         private void AlertBarControl_Loaded(object sender, RoutedEventArgs e)
         {
             ApplyAlertBarColorFromSettings();
@@ -30,6 +36,9 @@ namespace InfoTools
             InitializeAlertBar();
         }
 
+        /// <summary>
+        /// Applies font face and scale settings from configuration to the alert text.
+        /// </summary>
         public void ApplyAlertBarFontAndScale()
         {
             if (App.InfoToolsSettings.TryGetValue("AlertBarFontFace", out var fontFace))
@@ -61,6 +70,10 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Applies the specified color to the alert bar background.
+        /// </summary>
+        /// <param name="colorHex">Hex color string (e.g., "#FF0000").</param>
         public void ApplyAlertBarColor(string colorHex)
         {
             try
@@ -74,6 +87,9 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Applies the alert bar color from settings.
+        /// </summary>
         private void ApplyAlertBarColorFromSettings()
         {
             if (App.InfoToolsSettings.TryGetValue("AlertBarColor", out var colorHex))
@@ -82,6 +98,9 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Initializes the alert bar by reading the alert text file and starting the update timer.
+        /// </summary>
         private void InitializeAlertBar()
         {
             string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
@@ -93,6 +112,10 @@ namespace InfoTools
             _alertTimer.Start();
         }
 
+        /// <summary>
+        /// Updates the alert text by reading the file and replacing placeholders.
+        /// Starts or stops the per-second timer if $$TIME$$ is present or removed.
+        /// </summary>
         private void UpdateAlertText()
         {
             string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
@@ -129,6 +152,9 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Sets up the scrolling animation for the alert text.
+        /// </summary>
         private void SetupScrollingAnimation()
         {
             if (string.IsNullOrEmpty(AlertText.Text)) return;
@@ -162,6 +188,9 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Handles the rendering event to scroll the alert text.
+        /// </summary>
         private void OnAlertTextRender(object? sender, EventArgs e)
         {
             double scaleX = 1.0;
@@ -181,6 +210,9 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Stops the scrolling animation for the alert text.
+        /// </summary>
         private void StopScrollingAnimation()
         {
             if (_isScrolling)
@@ -190,16 +222,26 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Starts the scrolling animation for the alert text.
+        /// </summary>
         private void StartScrollingAnimation()
         {
             SetupScrollingAnimation();
         }
 
+        /// <summary>
+        /// Event handler for the alert timer that checks for file updates every 60 seconds.
+        /// </summary>
         private void OnAlertTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             Dispatcher.Invoke(() => UpdateAlertText());
         }
 
+        /// <summary>
+        /// Manages the per-second timer for updating the alert text if $$TIME$$ is present.
+        /// </summary>
+        /// <param name="enable">True to enable the timer, false to disable and dispose it.</param>
         private void SetupTimeUpdateTimer(bool enable)
         {
             if (enable)
@@ -227,6 +269,9 @@ namespace InfoTools
             }
         }
 
+        /// <summary>
+        /// Event handler for the per-second timer that updates the alert text if $$TIME$$ is present.
+        /// </summary>
         private void OnAlertTimeUpdateTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             Dispatcher.Invoke(() =>
