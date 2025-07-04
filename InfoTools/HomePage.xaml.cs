@@ -134,8 +134,9 @@ namespace InfoTools
                 string text = File.ReadAllText(path);
                 text = text.Replace("$$DAY$$", DateTime.Now.DayOfWeek.ToString());
                 text = text.Replace("$$MONTH$$", DateTime.Now.ToString("MMMM"));
-                text = text.Replace("$$DATE$$", DateTime.Now.ToShortDateString());
+                text = text.Replace("$$DATE$$", DateTime.Now.Day.ToString());
                 text = text.Replace("$$YEAR$$", DateTime.Now.Year.ToString());
+                text = text.Replace("$$TIME$$", DateTime.Now.ToString("hh:mm:ss tt"));
                 AlertText.Text = text;
                 if (text.Length > 0)
                 {

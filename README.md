@@ -97,9 +97,14 @@ The application now includes an alert bar on the HomePage that displays dynamic 
 
 ### Features
 
-- **Dynamic Content**: Messages support placeholders like `$$DAY$$`, `$$MONTH$$`, `$$DATE$$`, and `$$YEAR$$` that are automatically replaced with current values.
+- **Dynamic Content**: Messages support placeholders that are automatically replaced with current values:
+  - `$$DAY$$` - Current day of the week (e.g., "Monday")
+  - `$$MONTH$$` - Current month name (e.g., "January")
+  - `$$DATE$$` - Current day of the month (e.g., "15")
+  - `$$YEAR$$` - Current year (e.g., "2024")
+  - `$$TIME$$` - Current time in 12-hour format with AM/PM (e.g., "02:30:45 PM")
 - **Scrolling Display**: Messages scroll from right to left across the screen for better visibility.
-- **Periodic Updates**: The alert bar checks for content changes every 60 seconds and updates automatically.
+- **Periodic Updates**: The alert bar checks for content changes every 60 seconds and updates automatically with current date/time values.
 - **Conditional Display**: The alert bar only appears when `alertBarText.txt` exists and contains content.
 
 ### Configuration
@@ -107,9 +112,9 @@ The application now includes an alert bar on the HomePage that displays dynamic 
 To enable alerts, simply create or modify the `alertBarText.txt` file in the `resources` folder with your message content. The file is automatically copied to the output directory on build.
 
 Example content:
-Welcome to InfoTools! Today is \$$DAY$$, \$$DATE$$/\$$MONTH$$/\$$YEAR$$ in \$$YEAR$$.
+Welcome to InfoTools! Today is $$DAY$$, $$DATE$$/$$MONTH$$/$$YEAR$$ at $$TIME$$.
 
-This will display: "Welcome to InfoTools! Today is Monday, 10/2/2023 in 2023."
+This will display: "Welcome to InfoTools! Today is Monday, 15/January/2024 at 02:30:45 PM."
 
 ## Settings Functionality
 
@@ -149,7 +154,7 @@ Settings are stored in `resources/config.json` in the application directory.
 If the file does not exist, it is created with default values on first run.
 
 Example:
-````json
+```json
 {
   "NavigationColor": "#2D2D30",
   "AlertBarColor": "#FF0000",
@@ -157,28 +162,28 @@ Example:
   "AlertBarScaleX": 1.0,
   "AlertBarScaleY": 1.0
 }
-````
----
 
-For more details, see the in-app Settings page or review the `App.xaml.cs` and `SettingsPage.xaml.cs` source files.
+For more details, see the in-app Settings page or review the App.xaml.cs and SettingsPage.xaml.cs source files.
 
 Update these as needed for new releases.
 
-## Versioning
-
-- **Current Version:** 0.8.0
-- **Assembly Version:** 0.8.0.1
-- **File Version:** 0.8.0.1
-- **Informational Version:** 0.8.0
-
+Versioning
+Current Version: 0.9.0
+Assembly Version: 0.9.0.1
+File Version: 0.9.0.1
+Informational Version: 0.9.0
 Versioning follows semantic versioning for features and bugfixes. Assembly and file versions are incremented with each release.
 
-## Notes
+Notes
+If you encounter issues with missing resources, ensure the resources directory and its files are present in the output directory after build.
+The application is intended for Windows only.
+Favicon downloads have a 10-second timeout to prevent hanging on unresponsive servers.
+The favicon analysis uses MD5 hashing for compatibility with the OWASP favicon database format.
+NEW: Site scanning results are cached for 5 minutes to reduce server load and improve performance.
 
-- If you encounter issues with missing resources, ensure the `resources` directory and its files are present in the output directory after build.
-- The application is intended for Windows only.
-- Favicon downloads have a 10-second timeout to prevent hanging on unresponsive servers.
-- The favicon analysis uses MD5 hashing for compatibility with the OWASP favicon database format.
-- **NEW:** Site scanning results are cached for 5 minutes to reduce server load and improve performance.
-
----
+The key changes include:
+- Added `$$TIME$$` placeholder support with 12-hour format including AM/PM
+- Fixed `$$DATE$$` to return only the day number instead of the full date string
+- Updated version numbers to 0.9.0 for the new functionality
+- Updated README documentation to reflect the new time placeholder and corrected date behavior
+- All date/time values are dynamically updated every 60 seconds to ensure current information
