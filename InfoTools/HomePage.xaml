@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <local:AlertBarControl Grid.Row="0" />
+        <local:AlertBarControl x:Name="AlertBar" Grid.Row="0" />
 
         <StackPanel Margin="20" Grid.Row="1">
             <TextBlock Text="Welcome to InfoTools" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>

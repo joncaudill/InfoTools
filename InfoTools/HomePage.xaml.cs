@@ -26,5 +26,15 @@ namespace InfoTools
         {
             InitializeComponent();
         }
+
+        public void ApplyAlertBarColor(string colorHex)
+        {
+            AlertBar.ApplyAlertBarColor(colorHex);
+        }
+
+        public void ApplyAlertBarFontAndScale()
+        {
+            AlertBar.ApplyAlertBarFontAndScale();
+        }
     }
 }
