@@ -112,7 +112,7 @@ The application now includes an alert bar on the HomePage that displays dynamic 
 To enable alerts, simply create or modify the `alertBarText.txt` file in the `resources` folder with your message content. The file is automatically copied to the output directory on build.
 
 Example content:
-Welcome to InfoTools! Today is $$DAY$$, $$DATE$$/$$MONTH$$/$$YEAR$$ at $$TIME$$.
+Welcome to InfoTools! Today is \$$DAY$$, \$$DATE$$/\$$MONTH$$/\$$YEAR$$ at \$$TIME$$.
 
 This will display: "Welcome to InfoTools! Today is Monday, 15/January/2024 at 02:30:45 PM."
 
@@ -162,19 +162,21 @@ Example:
   "AlertBarScaleX": 1.0,
   "AlertBarScaleY": 1.0
 }
+```
 
 For more details, see the in-app Settings page or review the App.xaml.cs and SettingsPage.xaml.cs source files.
 
 Update these as needed for new releases.
 
-Versioning
-Current Version: 0.9.0
-Assembly Version: 0.9.0.1
-File Version: 0.9.0.1
-Informational Version: 0.9.0
+## Versioning
+- Current Version: 0.9.0
+- Assembly Version: 0.9.0.1
+- File Version: 0.9.0.1
+- Informational Version: 0.9.0
+
 Versioning follows semantic versioning for features and bugfixes. Assembly and file versions are incremented with each release.
 
-Notes
+### Notes
 If you encounter issues with missing resources, ensure the resources directory and its files are present in the output directory after build.
 The application is intended for Windows only.
 Favicon downloads have a 10-second timeout to prevent hanging on unresponsive servers.

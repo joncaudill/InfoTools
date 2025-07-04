@@ -26,6 +26,11 @@ namespace InfoTools
         private bool _isScrolling;
         private double _scrollSpeed = 2.0; // pixels per frame, adjust as needed
 
+        // Add a field to track if $$TIME$$ is present and a timer for per-second updates
+        private System.Timers.Timer? _alertTimer;
+        private System.Timers.Timer? _alertTimeUpdateTimer;
+        private bool _alertTextHasTimeTag = false;
+
         public HomePage()
         {
             InitializeComponent();
@@ -117,7 +122,7 @@ namespace InfoTools
             UpdateAlertText(); // This will set visibility appropriately
 
             // Start timer to check for updates every minute
-            var _alertTimer = new System.Timers.Timer(60000);
+            _alertTimer = new System.Timers.Timer(60000);
             _alertTimer.Elapsed += OnAlertTimerElapsed;
             _alertTimer.AutoReset = true;
             _alertTimer.Start();
@@ -132,6 +137,8 @@ namespace InfoTools
             if (File.Exists(path) && new FileInfo(path).Length > 0)
             {
                 string text = File.ReadAllText(path);
+                _alertTextHasTimeTag = text.Contains("$$TIME$$", StringComparison.OrdinalIgnoreCase);
+
                 text = text.Replace("$$DAY$$", DateTime.Now.DayOfWeek.ToString());
                 text = text.Replace("$$MONTH$$", DateTime.Now.ToString("MMMM"));
                 text = text.Replace("$$DATE$$", DateTime.Now.Day.ToString());
@@ -148,12 +155,16 @@ namespace InfoTools
                 }
                 StopScrollingAnimation();
                 SetupScrollingAnimation();
+
+                // Start or stop the per-second timer based on $$TIME$$ tag
+                SetupTimeUpdateTimer(_alertTextHasTimeTag);
             }
             else
             {
                 AlertText.Text = string.Empty;
                 AlertCanvas.Visibility = Visibility.Collapsed;
                 StopScrollingAnimation();
+                SetupTimeUpdateTimer(false);
             }
         }
 
@@ -241,6 +252,60 @@ namespace InfoTools
         private void OnAlertTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             Dispatcher.Invoke(() => UpdateAlertText());
+        }
+
+        /// <summary>
+        /// Add this helper to manage the per-second timer
+        /// </summary>
+        private void SetupTimeUpdateTimer(bool enable)
+        {
+            if (enable)
+            {
+                if (_alertTimeUpdateTimer == null)
+                {
+                    _alertTimeUpdateTimer = new System.Timers.Timer(1000);
+                    _alertTimeUpdateTimer.Elapsed += OnAlertTimeUpdateTimerElapsed;
+                    _alertTimeUpdateTimer.AutoReset = true;
+                    _alertTimeUpdateTimer.Start();
+                }
+                else
+                {
+                    _alertTimeUpdateTimer.Start();
+                }
+            }
+            else
+            {
+                if (_alertTimeUpdateTimer != null)
+                {
+                    _alertTimeUpdateTimer.Stop();
+                    _alertTimeUpdateTimer.Dispose();
+                    _alertTimeUpdateTimer = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This event updates only the $$TIME$$ tag in the alert text
+        /// </summary>
+        private void OnAlertTimeUpdateTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                string path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources", "alertBarText.txt");
+                if (File.Exists(path) && new FileInfo(path).Length > 0)
+                {
+                    string template = File.ReadAllText(path);
+                    if (template.Contains("$$TIME$$", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string text = template.Replace("$$DAY$$", DateTime.Now.DayOfWeek.ToString())
+                                              .Replace("$$MONTH$$", DateTime.Now.ToString("MMMM"))
+                                              .Replace("$$DATE$$", DateTime.Now.Day.ToString())
+                                              .Replace("$$YEAR$$", DateTime.Now.Year.ToString())
+                                              .Replace("$$TIME$$", DateTime.Now.ToString("hh:mm:ss tt"));
+                        AlertText.Text = text;
+                    }
+                }
+            });
         }
     }
 }
