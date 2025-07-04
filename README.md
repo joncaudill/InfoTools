@@ -105,6 +105,7 @@ The application now includes an alert bar on the HomePage that displays dynamic 
   - `$$TIME$$` - Current time in 12-hour format with AM/PM (e.g., "02:30:45 PM")
 - **Scrolling Display**: Messages scroll from right to left across the screen for better visibility.
 - **Periodic Updates**: The alert bar checks for content changes every 60 seconds and updates automatically with current date/time values.
+- **Time updates**: if \$$TIME$$ is used, it will update every second to reflect the current time.
 - **Conditional Display**: The alert bar only appears when `alertBarText.txt` exists and contains content.
 
 ### Configuration
@@ -188,4 +189,5 @@ The key changes include:
 - Fixed `$$DATE$$` to return only the day number instead of the full date string
 - Updated version numbers to 0.9.0 for the new functionality
 - Updated README documentation to reflect the new time placeholder and corrected date behavior
-- All date/time values are dynamically updated every 60 seconds to ensure current information
+- All date values are dynamically updated every 60 seconds to ensure current information.
+- All time values are dynamically updated every second to ensure current information.
