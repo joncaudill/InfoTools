@@ -91,9 +91,9 @@ You can build the project using Visual Studio or the .NET CLI:
 - Comprehensive XML documentation for IntelliSense support
 - Modular design allowing favicon analysis to be used across multiple pages
 
-## Alert Functionality
+# Alert Functionality
 
-The application now includes an alert bar on the HomePage that displays dynamic messages from the `alertBarText.txt` file in the resources folder.
+The alert bar functionality has been refactored into a reusable user control called `AlertBarControl`, allowing it to be used across any page in the application.
 
 ### Features
 
@@ -105,89 +105,44 @@ The application now includes an alert bar on the HomePage that displays dynamic 
   - `$$TIME$$` - Current time in 12-hour format with AM/PM (e.g., "02:30:45 PM")
 - **Scrolling Display**: Messages scroll from right to left across the screen for better visibility.
 - **Periodic Updates**: The alert bar checks for content changes every 60 seconds and updates automatically with current date/time values.
-- **Time updates**: if \$$TIME$$ is used, it will update every second to reflect the current time.
+- **Time updates**: if `$$TIME$$` is used, it will update every second to reflect the current time.
 - **Conditional Display**: The alert bar only appears when `alertBarText.txt` exists and contains content.
+- **Reusable Control**: The alert bar is now a standalone control that can be included in any WPF page.
 
-### Configuration
+### Usage
 
-To enable alerts, simply create or modify the `alertBarText.txt` file in the `resources` folder with your message content. The file is automatically copied to the output directory on build.
+To add the alert bar to any page, follow these steps:
+
+1. **Include the Control in XAML**: Add the following namespace declaration at the top of your XAML file:
+   ```xml
+   xmlns:local="clr-namespace:InfoTools"
+Add the Control to Your Page: Place the AlertBarControl in your page layout, typically at the top:
+
+<Grid>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <local:AlertBarControl Grid.Row="0" />
+    <!-- Rest of your page content -->
+</Grid>
+Configuration: The alert bar automatically uses the settings from resources/config.json and reads alert text from resources/alertBarText.txt. No additional configuration is required.
+
+Configuration
+To enable alerts, simply create or modify the alertBarText.txt file in the resources folder with your message content. The file is automatically copied to the output directory on build.
 
 Example content:
-Welcome to InfoTools! Today is \$$DAY$$, \$$DATE$$/\$$MONTH$$/\$$YEAR$$ at \$$TIME$$.
 
+Welcome to InfoTools! Today is $$DAY$$ , $$DATE$$ / $$MONTH$$ / $$YEAR$$ at $$TIME$$ .
 This will display: "Welcome to InfoTools! Today is Monday, 15/January/2024 at 02:30:45 PM."
 
-## Settings Functionality
-
-InfoTools now supports user-configurable settings for UI customization:
-
-- **Navigation Bar Color:**  
-  Change the color of the navigation bar to match your preferences.
-- **Alert Bar Color:**  
-  Set the background color of the alert bar displayed on the Home page.
-- **Alert Bar Font Face:**  
-  Choose the font family used for the alert bar text.
-- **Alert Bar Scale X / Y:**  
-  Adjust the horizontal and vertical scale (size) of the alert bar text independently.
-
-### How to Use
-
-1. **Open the Settings Page:**  
-   Click the "Settings" button in the navigation panel.
-
-2. **Modify Settings:**  
-   - Enter your desired hex color codes for the Navigation Bar and Alert Bar.
-   - Select a font face from the dropdown for the alert bar.
-   - Enter positive numeric values for the alert bar's horizontal (Scale X) and vertical (Scale Y) scaling.
-   - Example: `#2D2D30` for dark gray, `#FF0000` for red, font face `Consolas`, scale `2.5`.
-
-3. **Apply Changes:**  
-   - Click "Apply Changes" to save and immediately apply your settings.
-   - The changes are persisted in `resources/config.json` and will be loaded on next startup.
-
-4. **Immediate Effect:**  
-   - Navigation bar color updates instantly.
-   - If the Home page is active, the alert bar color, font, and scale update immediately as well.
-
-### Configuration File
-
-Settings are stored in `resources/config.json` in the application directory.  
-If the file does not exist, it is created with default values on first run.
-
-Example:
-```json
-{
-  "NavigationColor": "#2D2D30",
-  "AlertBarColor": "#FF0000",
-  "AlertBarFontFace": "Consolas",
-  "AlertBarScaleX": 1.0,
-  "AlertBarScaleY": 1.0
-}
-```
-
-For more details, see the in-app Settings page or review the App.xaml.cs and SettingsPage.xaml.cs source files.
-
-Update these as needed for new releases.
-
-## Versioning
-- Current Version: 0.9.0
-- Assembly Version: 0.9.0.1
-- File Version: 0.9.0.1
-- Informational Version: 0.9.0
-
+Versioning
+Current Version: 0.10.0
+Assembly Version: 0.10.0.1
+File Version: 0.10.0.1
+Informational Version: 0.10.0
 Versioning follows semantic versioning for features and bugfixes. Assembly and file versions are incremented with each release.
 
-### Notes
-If you encounter issues with missing resources, ensure the resources directory and its files are present in the output directory after build.
-The application is intended for Windows only.
-Favicon downloads have a 10-second timeout to prevent hanging on unresponsive servers.
-The favicon analysis uses MD5 hashing for compatibility with the OWASP favicon database format.
-NEW: Site scanning results are cached for 5 minutes to reduce server load and improve performance.
-
-The key changes include:
-- Added `$$TIME$$` placeholder support with 12-hour format including AM/PM
-- Fixed `$$DATE$$` to return only the day number instead of the full date string
-- Updated version numbers to 0.9.0 for the new functionality
-- Updated README documentation to reflect the new time placeholder and corrected date behavior
-- All date values are dynamically updated every 60 seconds to ensure current information.
-- All time values are dynamically updated every second to ensure current information.
+Notes
+The alert bar is now a reusable control (AlertBarControl) that can be added to any page by including <local:AlertBarControl /> in your XAML (with proper namespace). This refactoring enhances modularity and allows the alert functionality to be used throughout the application.
+```

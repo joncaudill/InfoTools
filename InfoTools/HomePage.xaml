@@ -14,16 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Canvas x:Name="AlertCanvas" Height="50" Background="Red" Visibility="Hidden" Grid.Row="0" ClipToBounds="True">
-            <TextBlock x:Name="AlertText" FontFamily="Consolas" FontSize="18" Foreground="LightGray">
-                <TextBlock.Effect>
-                    <DropShadowEffect Color="Black" ShadowDepth="2" Opacity="1" BlurRadius="0"  />
-                </TextBlock.Effect>
-                <TextBlock.RenderTransform>
-                    <ScaleTransform ScaleX="2.5" ScaleY="2.5"/>
-                </TextBlock.RenderTransform>
-            </TextBlock>
-        </Canvas>
+        <local:AlertBarControl Grid.Row="0" />
 
         <StackPanel Margin="20" Grid.Row="1">
             <TextBlock Text="Welcome to InfoTools" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
