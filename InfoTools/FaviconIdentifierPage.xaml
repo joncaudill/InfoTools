@@ -12,11 +12,11 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
             <TextBlock Text="favicon identifier"
                        FontSize="24"
-                       Margin="0,0,0,16"/>
+                       Margin="0,0,0,2"/>
             <TextBlock x:Name="StatusText"
                        FontSize="16"
                        Foreground="Gray"
-                       Margin="0,0,0,16"/>
+                       Margin="0,0,0,2"/>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                 <TextBox x:Name="FilePathTextBox" Width="220" IsReadOnly="True" Margin="0,0,8,0"/>
                 <Button Content="Browse..." Click="BrowseButton_Click"/>

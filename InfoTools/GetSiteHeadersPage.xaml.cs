@@ -190,7 +190,7 @@ namespace InfoTools
             foreach (var header in response.Headers)
             {
                 var values = string.Join(", ", header.Value);
-                var headerLabel = new Label { Content = $"{header.Key}: {values}", FontSize = 14, Margin = new Thickness(0, 5, 0, 0) };
+                var headerLabel = new Label { Content = $"{header.Key}: {values}", FontSize = 14, Margin = new Thickness(0, -2, 0, -2) };
                 HeadersPanel.Children.Add(headerLabel);
             }
 

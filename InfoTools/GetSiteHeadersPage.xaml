@@ -23,7 +23,7 @@
         </StackPanel>
 
         <!-- Favicon Section -->
-        <StackPanel Grid.Row="1" Margin="20,0,20,20" x:Name="FaviconSection" Visibility="Collapsed">
+        <StackPanel Grid.Row="1" Margin="20,0,20,2" x:Name="FaviconSection" Visibility="Collapsed">
             <Label Content="Site Favicon:" FontSize="16" Margin="0,0,0,10"/>
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="FaviconImage" Width="32" Height="32" Margin="0,0,10,0"/>
